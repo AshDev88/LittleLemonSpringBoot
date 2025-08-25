@@ -2,6 +2,7 @@ package com.example.LittleLemon.service;
 
 import com.example.LittleLemon.dto.ProductCreateDto;
 import com.example.LittleLemon.dto.ProductResponseDto;
+import com.example.LittleLemon.exception.ResourceNotFoundException;
 import com.example.LittleLemon.model.Category;
 import com.example.LittleLemon.model.Product;
 import com.example.LittleLemon.repository.CategoryRepository;
@@ -35,7 +36,7 @@ public class ProductService {
     }
 
     public ProductResponseDto addProduct(Long categoryId, ProductCreateDto productCreateDto){
-        Category category = categoryRepository.getReferenceById(categoryId);
+        Category category = categoryRepository.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category not Found"));
         Product product = ProductMapper.toEntity(productCreateDto,category);
         Product p = productRepository.save(product);
         return ProductMapper.toResponseDto(p);

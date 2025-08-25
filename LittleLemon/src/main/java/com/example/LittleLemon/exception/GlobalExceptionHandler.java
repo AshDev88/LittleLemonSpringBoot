@@ -21,4 +21,10 @@ public class GlobalExceptionHandler {
         return  new ResponseEntity<>(error,HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
+
+    @ExceptionHandler(CategoryAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleCategoryAlreadyExists(CategoryAlreadyExistsException ex){
+    ErrorResponse error = new ErrorResponse("ALREADY_EXISTS", ex.getMessage());
+        return new ResponseEntity<>(error,HttpStatus.CONFLICT);
+    }
 }

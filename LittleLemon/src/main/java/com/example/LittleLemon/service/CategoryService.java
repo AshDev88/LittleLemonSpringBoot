@@ -2,6 +2,7 @@ package com.example.LittleLemon.service;
 
 import com.example.LittleLemon.dto.CategoryCreateDto;
 import com.example.LittleLemon.dto.CategoryResponseDto;
+import com.example.LittleLemon.exception.CategoryAlreadyExistsException;
 import com.example.LittleLemon.model.Category;
 import com.example.LittleLemon.repository.CategoryRepository;
 import com.example.LittleLemon.repository.ProductRepository;
@@ -23,7 +24,15 @@ public class CategoryService {
 
     public CategoryResponseDto createCategory(CategoryCreateDto categoryCreateDto){
 
-        Category category = categoryRepository.save(CategoryMapper.toEntity(categoryCreateDto));
+        categoryRepository.findByName(categoryCreateDto.getName()).ifPresent(c->{
+                throw new CategoryAlreadyExistsException("Category Already Exists");});
+
+        Category category = null;
+        try {
+            category = categoryRepository.save(CategoryMapper.toEntity(categoryCreateDto));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         CategoryResponseDto categoryResponseDto = CategoryMapper.toResponseDto(category);
 
