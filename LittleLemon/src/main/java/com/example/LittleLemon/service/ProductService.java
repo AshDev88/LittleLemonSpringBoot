@@ -45,6 +45,9 @@ public class ProductService {
     public List<ProductResponseDto> getAllProductsByCategory(Long categoryId){
         List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
         List<Product> productList = productRepository.findByCategoryId(categoryId);
+        if (productList.isEmpty()){
+            throw new ResourceNotFoundException("Not Found!");
+        }
 
         for(Product p: productList){
             ProductResponseDto productResponseDto = ProductMapper.toResponseDto(p);
