@@ -9,7 +9,9 @@ public class ProductMapper {
 
     public static Product toEntity(ProductCreateDto productCreateDto, Category category){
 
-        return new Product(productCreateDto.getName(), productCreateDto.getDescription(),productCreateDto.getImageUrl(),productCreateDto.getPrice(),productCreateDto.getQuantity(),category);
+        String productName = productCreateDto.getName().substring(0,1).toUpperCase()+productCreateDto.getName().substring(1).toLowerCase();
+
+        return new Product(productName, productCreateDto.getDescription(),productCreateDto.getImageUrl(),productCreateDto.getPrice(),productCreateDto.getQuantity(),category);
 
     }
 
